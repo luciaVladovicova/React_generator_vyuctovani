@@ -1,6 +1,6 @@
 # Generátor vyúčtovania tréningovej prípravy (React)
 
-Prvá verzia webovej aplikácie podľa priloženého Excelu **Evidencia majetku(1).xlsx** a fotografie vyúčtovania.
+Prvá verzia webovej aplikácie pre gebnerovanie vyučtovania
 
 ## Spustenie
 
