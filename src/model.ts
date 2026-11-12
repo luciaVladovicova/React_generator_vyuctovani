@@ -2,7 +2,7 @@ import * as XLSX from 'xlsx';
 export type Expense = { uid:string; id:string; month:string; supplier:string; item:string; category:string; quantity:string; unit:string; amount:number; included:boolean };
 export type Details = { athlete:string; iban:string; category:string; sport:string; trainingDate:string; settlementDate:string; expenseName:string; notes:string };
 export const MONTHS = ['Január','Február','Marec','Apríl','Máj','Jún','Júl','August','September','Október','November','December'];
-export const INITIAL_DETAILS:Details = {athlete:'Lucia Vladovičová',iban:'',category:'',sport:'Paradrezúra',trainingDate:'2026-02-07',settlementDate:'2026-11-12',expenseName:'Športový materiál',notes:''};
+export const INITIAL_DETAILS:Details = {athlete:'',iban:'',category:'',sport:'',trainingDate:'',settlementDate:'',expenseName:'Športový materiál',notes:''};
 const canon=(v:unknown)=>String(v??'').trim().toLocaleLowerCase('sk-SK').replace(/\s+/g,' ');
 const headerMap:Record<string,string>={'id':'id','mesiac':'month','dodávateľ':'supplier','dodavatel':'supplier','položka / služba':'item','polozka / sluzba':'item','položka':'item','kategória':'category','kategoria':'category','množstvo':'quantity','mnozstvo':'quantity','jednotka':'unit','cena spolu (€)':'amount','cena spolu':'amount','suma':'amount'};
 export function euro(n:number){return new Intl.NumberFormat('sk-SK',{style:'currency',currency:'EUR'}).format(n)}
@@ -26,5 +26,4 @@ export function parseWorkbook(data:ArrayBuffer):Expense[]{
  if(rows.length===0)throw new Error('V Exceli sa nenašli platné položky. Očakávam stĺpce Mesiac, Položka / služba a Cena spolu (€).');
  return rows;
 }
-export async function loadExample(){const response=await fetch('/vzor-evidencia.xlsx');if(!response.ok)throw new Error('Ukážkový súbor nie je dostupný.');return parseWorkbook(await response.arrayBuffer())}
 export function formatDate(date:string){if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return date;const [y,m,d]=date.split('-');return `${Number(d)}.${Number(m)}.${y}`}

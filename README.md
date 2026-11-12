@@ -1,45 +1,42 @@
-# Generátor vyúčtovania tréningovej prípravy (React)
+# Generátor vyúčtovaní – čistá verzia
 
-Prvá verzia webovej aplikácie podľa priloženého Excelu **Evidencia majetku(1).xlsx** a fotografie vyúčtovania.
+React + TypeScript aplikácia na import Excelu `.xlsx` a vytvorenie jedného Word protokolu za mesiac.
 
 ## Spustenie
-
-Potrebujete **Node.js 20.19+ alebo 22.12+** a internet pri prvom inštalovaní balíčkov.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Otvorte adresu, ktorú vypíše terminál (obvykle http://localhost:5173).
+Aplikácia sa otvorí na adrese zobrazenej v termináli (zvyčajne http://localhost:5173).
 
-## Použitie
+## Čo sa zmenilo
 
-1. Po otvorení sa automaticky načíta ukážkový súbor `public/vzor-evidencia.xlsx`.
-2. Voliteľne kliknite na **Nahrať Excel** a vyberte vlastný súbor `.xlsx` alebo `.xls`.
-3. Vyberte mesiac; v tabuľke odškrtnite položky, ktoré nemajú ísť do protokolu.
-4. Vyplňte meno, IBAN, športové odvetvie, kategóriu a dátumy.
-5. Predvolene sa vytvorí jeden súhrnný riadok za mesiac (ako na fotografii). Môžete prepnúť na rozpis položiek.
-6. Kliknite **Exportovať DOCX** alebo **Vygenerovať Word (.docx)**. Dokument sa stiahne do priečinka Stiahnuté súbory.
+- Aplikácia začína **bez nahraného Excelu** a bez vyplneného športovca.
+- Ukážkový Excel sa automaticky nenačítava a v balíku už nie je.
+- V sekcii **Zdrojové dáta** je na začiatku iba tlačidlo **Nahraj súbor Excel (.xlsx)**.
+- Po úspešnom importe sa zobrazí názov súboru, počet položiek a mesiace.
+- Export Wordu zostáva vypnutý, pokým nie je vybraná aspoň jedna položka.
+- Údaje formulára sa neukladajú do `localStorage`, takže pri opätovnom otvorení začína formulár prázdny.
 
-## Pravidlá spracovania Excelu
+## Orientácia v kóde
 
-- Očakáva aspoň stĺpce **Mesiac**, **Položka / služba** a **Cena spolu (€)**.
-- Podporuje pôvodné stĺpce: ID, Mesiac, Dodávateľ, Položka / služba, Kategória, Množstvo, Jednotka, Cena spolu (€).
-- Ignoruje prázdne riadky a súhrnné riadky s ID `Spolu`, aby nedochádzalo k dvojitému započítaniu.
-- Sumy počíta v centoch, aby obmedzila chyby s desatinnou čiarkou.
-- Spracuje aj viac hárkov s rovnakou štruktúrou.
-- Jeden mesiac = jeden protokol; rok nastavujete dátumom prípravy. Ak Excel obsahuje rovnaké názvy mesiacov z viacerých rokov, pred importom ich treba oddeliť do jednotlivých súborov, alebo doplniť rok do dát.
+| Súbor | Účel |
+| --- | --- |
+| `src/main.tsx` | Spustenie React aplikácie – nemení sa skoro vôbec |
+| `src/App.tsx` | Hlavný stav, výber mesiaca, import, generovanie DOCX |
+| `src/components/SourceData.tsx` | Tlačidlo pre Excel |
+| `src/components/DetailsForm.tsx` | Údaje o športovcovi |
+| `src/components/ExpenseTable.tsx` | Výber položiek a mesiacov |
+| `src/components/DocumentOptions.tsx` | Nastavenie súhrnného/podrobného protokolu |
+| `src/components/SummaryAndPreview.tsx` | Súhrn a náhľad |
+| `src/model.ts` | Typy, parser Excelu, mesiace, predvolené hodnoty |
+| `src/word.ts` | Formát a tvorba Word protokolu |
+| `src/style.css` | Vzhľad celej aplikácie |
 
-## Poznámky
+## Formát Excelu
 
-- Dokument obsahuje hlavičku SZTPŠ, informačnú tabuľku, položky, celkovú sumu, priestor na tri podpisy a dátum zúčtovania.
-- **Logo nie je súčasťou generovaného Wordu**, pretože zdrojom je fotografia, nie pôvodný grafický súbor loga. Rozloženie je podobné vzoru, nie pixelovo totožné.
-- Údaje športovca sa ukladajú iba lokálne v danom prehliadači (localStorage). Importované Excel údaje sa neodosielajú na server ani neukladajú do databázy.
-- Pri prvom otvorení aplikácia načíta súbor so vzorovými údajmi vrátane konkrétnych nákupov dodaných v Exceli.
-- Na zostavenie produkčnej verzie použite `npm run build` (výsledok bude v `dist/`).
-- Použité závislosti: React, TypeScript, Vite, `xlsx` (SheetJS), `docx` a lucide-react.
+Očakáva stĺpce `Mesiac`, `Položka / služba` a `Cena spolu (€)`; voliteľne `ID`, `Dodávateľ`, `Kategória`, `Množstvo`, `Jednotka`. Riadky označené `Spolu` sa ignorujú.
 
-## Ďalší rozvoj
-
-Možno doplniť originálne logo, exaktne zhodnú Word šablónu, rok ako samostatný stĺpec v Exceli, históriu vyúčtovaní, kontrolu duplicitných vyúčtovaní a archiváciu.
+Import prebieha lokálne v prehliadači.
