@@ -1,6 +1,6 @@
 # Generátor vyúčtovaní – čistá verzia
 
-React + TypeScript aplikácia na import Excelu `.xlsx` a vytvorenie jedného Word protokolu za mesiac.
+Prvá verzia webovej aplikácie podľa priloženého Excelu **Evidencia majetku(1).xlsx** a fotografie vyúčtovania.
 
 ## Spustenie
 
