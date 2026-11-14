@@ -5,3 +5,55 @@
 .uploadrow:has(.secondary:only-of-type) { justify-content: flex-start; }
 .uploadrow:not(:has(.uploadfile)) { background: transparent; border-style: none; padding: 0; }
 .uploadrow:not(:has(.uploadfile)) .secondary { padding: 13px 17px; font-size: 13px; }
+
+/* Sprievodca: každá časť má vlastnú záložku namiesto dvoch stĺpcov. */
+.wizard-content{max-width:1040px}
+.wizard-progress{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:0;margin-bottom:29px}
+.wizard-step{border:1px solid #e0e7ef;background:#fff;border-radius:10px;padding:13px 8px;display:flex;justify-content:center;align-items:center;gap:7px;color:#6a7c91;font-size:11px;font-weight:700;min-width:0;text-align:center}
+.wizard-step.is-current{border-color:#2a6cbf;box-shadow:0 0 0 2px #2a6cbf16;color:#245fae}
+.wizard-step.is-done{color:#247e66}
+.wizard-step .bubble{width:25px;height:25px;flex-shrink:0}
+.wizard-step:disabled{opacity:.55;background:#f7f9fc}
+.wizard-panel{min-height:350px}
+.wizard-intro{margin:0 0 22px}
+.wizard-intro h2{font-size:21px;margin-bottom:7px}
+.wizard-intro p{font-size:13px;color:#7b8a9b;margin:0}
+.wizard-stack{display:flex;flex-direction:column;gap:19px}
+.wizard-actions{display:flex;justify-content:space-between;margin-top:24px;gap:12px}
+.wizard-actions button{min-width:128px}
+.fields-vertical{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+.group-editor{border-top:1px solid #ecf0f4;margin-top:19px;padding-top:19px}
+.group-help{font-size:12px;color:#677b90;line-height:1.6;margin-bottom:14px}
+.custom-group{padding:17px;border:1px solid #e2e9f2;border-radius:11px;margin-bottom:13px;background:#fbfcff;display:flex;flex-direction:column;gap:13px}
+.custom-group-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#274568}
+.icon-btn{border:0;background:transparent;color:#a14c52;display:flex;padding:5px;border-radius:7px}
+.icon-btn:hover:not(:disabled){background:#fff0f0}
+.group-total{border-top:1px solid #e2e9f2;padding-top:12px;display:flex;gap:7px;align-items:center;font-size:12px;color:#64768a}
+.group-total span{margin-left:auto;font-weight:800;color:#204a78;font-size:14px}
+.add-group{margin-top:4px}
+.group-editor h3{font-size:14px;margin:27px 0 11px;color:#283b52}
+.assignment{border-top:1px solid #edf0f4;padding:12px 0;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.assignment-name{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:12px}
+.assignment-name small{color:#78899a}
+.assignment select{max-width:260px;min-width:180px;border:1px solid #dbe3ec;border-radius:8px;padding:9px;color:#30455c;background:#fff}
+.export-panel{display:flex;align-items:center;flex-direction:column;text-align:center;padding:36px 20px;gap:13px}
+.export-panel>svg{color:#258a70}
+.export-panel h2{margin:0}
+.export-panel p{max-width:420px}
+.export-main{margin-top:13px}
+.export-panel .hint{margin-top:1px}
+@media(max-width:850px){.wizard-progress{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}.wizard-step{flex-direction:column;padding:10px 4px;font-size:10px}.wizard-step .bubble{width:24px;height:24px}}
+@media(max-width:560px){.wizard-progress{grid-template-columns:repeat(5,minmax(0,1fr))}.wizard-step{font-size:9px;line-height:1.3}.wizard-content{padding:20px 12px}.assignment{align-items:stretch;flex-direction:column;gap:8px}.assignment select{max-width:none;width:100%}.wizard-actions button{min-width:0}.head{margin-bottom:20px}}
+
+/* Výber Word šablóny – samostatný panel v kroku Súhrn */
+.template-picker h2 { display:flex; align-items:center; gap:9px; }
+.template-hint { color:#64748b; font-size:13px; line-height:1.6; margin:8px 0 16px; }
+.template-file { border:1px dashed #bfd0e8; background:#f8fafc; border-radius:12px; padding:18px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+.template-file-info { display:flex; align-items:center; gap:12px; min-width:0; }
+.template-file-info > svg { color:#2563eb; flex-shrink:0; }
+.template-file-info strong { display:block; overflow-wrap:anywhere; font-size:14px; }
+.template-file-info small { display:block; color:#64748b; margin-top:4px; }
+.template-controls { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.template-upload { display:inline-flex; align-items:center; gap:8px; cursor:pointer; }
+.template-upload input { display:none; }
+.template-picker code { padding:2px 5px; background:#eef2f7; border-radius:4px; color:#334155; }

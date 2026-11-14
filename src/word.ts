@@ -1,17 +1,15 @@
 import {AlignmentType, BorderStyle, Document, Packer, Paragraph, Table, TableCell, TableRow, TextRun, WidthType, VerticalAlign, HeightRule} from 'docx';
-import type {Details,Expense} from './model';
-import {amountToCents,euro,formatDate} from './model';
+import type {Details,DocumentRow} from './model';
+import {euro,formatDate} from './model';
 const border={style:BorderStyle.SINGLE,size:7,color:'262626'};
 const cell=(text:string,opts:{bold?:boolean;align?:typeof AlignmentType[keyof typeof AlignmentType];width?:number}={})=>new TableCell({width:opts.width?{size:opts.width,type:WidthType.DXA}:undefined,borders:{top:border,bottom:border,left:border,right:border},margins:{top:95,bottom:95,left:110,right:110},verticalAlign:VerticalAlign.CENTER,children:[new Paragraph({alignment:opts.align??AlignmentType.LEFT,spacing:{after:0,before:0},children:[new TextRun({text,bold:opts.bold,size:20,font:'Times New Roman'})]})]});
 const p=(s:string,opts:{bold?:boolean;center?:boolean;size?:number;before?:number;after?:number}={})=>new Paragraph({alignment:opts.center?AlignmentType.CENTER:AlignmentType.LEFT,spacing:{before:opts.before??0,after:opts.after??0},children:[new TextRun({text:s,bold:opts.bold,size:opts.size??20,font:'Times New Roman'})]});
 const row=(cells:TableCell[])=>new TableRow({children:cells});
 const space=(after:number)=>new Paragraph({spacing:{after},children:[new TextRun('')]});
-export async function createWord(details:Details,month:string,expenses:Expense[],aggregate:boolean):Promise<Blob>{
- const selected=expenses.filter(e=>e.included&&e.month===month);
- if(!selected.length)throw new Error('Vyber aspoň jednu položku.');
- const total=selected.reduce((a,e)=>a+amountToCents(e.amount),0)/100;
- const note=details.notes.trim()||selected.map(e=>e.item).join(', ');
- const itemRows=aggregate?[{name:details.expenseName||'Športový materiál',amount:total,description:note}]:selected.map(e=>({name:e.item,amount:e.amount,description:[e.supplier,e.category].filter(Boolean).join(' · ')}));
+export async function createWord(details: Details, month: string, itemRows: DocumentRow[]): Promise<Blob> {
+ if (!itemRows.length) throw new Error('V protokole musí byť aspoň jedna položka.');
+ const total = Math.round(itemRows.reduce((sum, item) => sum + Math.round(item.amount * 100), 0)) / 100;
+ if (itemRows.some(item => !item.name.trim())) throw new Error('Každá položka protokolu musí mať názov.');
  const expenseTable=new Table({width:{size:100,type:WidthType.PERCENTAGE},columnWidths:[800,3400,1750,3600],rows:[
  row([cell('Por. č.',{bold:true,align:AlignmentType.CENTER,width:800}),cell('Položky',{bold:true,align:AlignmentType.CENTER,width:3400}),cell('Suma',{bold:true,align:AlignmentType.CENTER,width:1750}),cell('Poznámky',{bold:true,align:AlignmentType.CENTER,width:3600})]),
  ...itemRows.map((e,i)=>row([cell(String(i+1),{align:AlignmentType.CENTER}),cell(e.name),cell(euro(e.amount),{align:AlignmentType.RIGHT}),cell(e.description)])),
@@ -32,7 +30,7 @@ export async function createWord(details:Details,month:string,expenses:Expense[]
  p('SLOVENSKÝ ZVÄZ TELESNE POSTIHNUTÝCH ŠPORTOVCOV',{bold:true,center:true,size:24}),
  p('Benediktiho 5, 811 05 Bratislava',{center:true,size:19,after:220}),
  p('VYÚČTOVANIE TRÉNINGOVEJ PRÍPRAVY',{bold:true,center:true,size:27,after:240}),
- information,space(270),expenseTable,p('Poznámka: '+(aggregate?'':note),{before:150}),
+ information,space(270),expenseTable,p('Poznámka:',{before:150}),
  space(900),signatures,space(340),p('Schválil:',{bold:true,size:24}),space(600),approval,space(270),dateTable
  ]}]});
  return await Packer.toBlob(doc);

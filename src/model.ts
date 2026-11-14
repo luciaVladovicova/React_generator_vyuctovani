@@ -1,5 +1,8 @@
 import * as XLSX from 'xlsx';
 export type Expense = { uid:string; id:string; month:string; supplier:string; item:string; category:string; quantity:string; unit:string; amount:number; included:boolean };
+export type ProtocolMode = 'summary' | 'groups' | 'details';
+export type ProtocolGroup = { id: string; name: string; notes: string };
+export type DocumentRow = { name: string; amount: number; description: string };
 export type Details = { athlete:string; iban:string; category:string; sport:string; trainingDate:string; settlementDate:string; expenseName:string; notes:string };
 export const MONTHS = ['Január','Február','Marec','Apríl','Máj','Jún','Júl','August','September','Október','November','December'];
 export const INITIAL_DETAILS:Details = {athlete:'',iban:'',category:'',sport:'',trainingDate:'',settlementDate:'',expenseName:'Športový materiál',notes:''};
