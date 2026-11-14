@@ -4,7 +4,7 @@ import PizZip from 'pizzip';
 import type { Details, DocumentRow } from './model';
 import { euro, formatDate } from './model';
 
-export const DEFAULT_TEMPLATE_NAME = 'Sablona_vyuctovania_SZTPS_nove_logo_upravene.docx';
+export const DEFAULT_TEMPLATE_NAME = 'Sablona_vyuctovania.docx';
 export const DEFAULT_TEMPLATE_URL = `${import.meta.env.BASE_URL}${DEFAULT_TEMPLATE_NAME}`;
 
 const REQUIRED_TAGS = ['meno_sportovca', 'iban', 'datum_pripravy', 'sport', 'polozka_1', 'suma_1', 'poznamka_1', 'spolu', 'datum_zuctovania'];
